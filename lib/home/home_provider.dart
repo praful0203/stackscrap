@@ -7,7 +7,7 @@ class HomeProvider {
 
   Future<QuestionData> getData() async {
     var res = await http
-        .get("http://192.168.31.221:8000/stack/questions/?format=json");
+        .get("http://192.168.0.107:8000/stack/questions/?format=json");
     var decodedJson = jsonDecode(res.body);
     print(decodedJson);
     QuestionData qd = QuestionData();

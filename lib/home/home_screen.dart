@@ -52,7 +52,8 @@ class HomeScreenState extends State<HomeScreen> {
             ));
           }
           if (currentState is InHomeState) {
-            QuestionData qd = currentState.questionData;
+            QuestionData questionData = currentState.questionData;
+
             return Material(
               child: Column(
                 children: <Widget>[
@@ -62,18 +63,21 @@ class HomeScreenState extends State<HomeScreen> {
                         height: MediaQuery.of(context).size.height * 0.3,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Color(0xffd399c1),
-                              Color(0xff9b5acf),
-                              Color(0xff611cdf)
-                            ]),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffd399c1),
+                                Color(0xff9b5acf),
+                                Color(0xff611cdf),
+                              ],
+                            ),
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(30),
-                                bottomRight: Radius.circular(30))),
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
+                            )),
                       ),
                       AppBar(
                         backgroundColor: Colors.transparent,
-                        elevation: 0,
+                        elevation: 0.0,
                         title: Text("Stack Scrap"),
                       ),
                       Positioned(
@@ -81,9 +85,11 @@ class HomeScreenState extends State<HomeScreen> {
                         left: 20,
                         right: MediaQuery.of(context).size.width * 0.3,
                         child: Text(
-                          "Hi! welcome to Stack Scrap!",
-                          style:
-                              TextStyle(color: Colors.white70, fontSize: 22.0),
+                          "Hi, Welcome to Stack Scrap App!",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 22,
+                          ),
                         ),
                       )
                     ],
@@ -93,43 +99,56 @@ class HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       "All Questions",
                       style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: qd.questions.length,
+                      itemCount: questionData.questions.length,
                       itemBuilder: (context, i) {
-                        Questions questions = qd.questions[i];
+                        Questions questions = questionData.questions[i];
+                        String tags = questions.tags;
+                        tags = tags.substring(1, tags.length - 1);
+                        var tagList = tags.split(",");
                         return ListTile(
+                          dense: true,
+                          isThreeLine: true,
                           leading: CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.blueGrey,
                             foregroundColor: Colors.white,
+                            backgroundColor: Colors.blueGrey,
                             child: Text(questions.voteCount.toString()),
                           ),
                           title: Text(questions.question),
                           trailing: Chip(
                             backgroundColor: Colors.blueGrey,
                             shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             label: Text(
                               questions.views,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                          subtitle: Row(
-                            children: <Widget>[
-                              Chip(
-                                backgroundColor: Color(0xff9b5acf),
-                                label: Text(
-                                  "Java",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            ],
+                          subtitle: Wrap(
+                            children: tagList
+                                .map((t) => Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Chip(
+                                      backgroundColor: Color(0xff9b5acf),
+                                      label: Text(
+                                        t,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )))
+                                .toList(),
                           ),
                         );
                       },
